@@ -42,4 +42,21 @@ exports.updateTour = async (req, res, next) => {
     } catch (err) {
         res.status(400).json({ status: "fail", message: err.message })
     }
+};
+
+exports.deleteTour = async (req, res, next) => {
+    try {
+        // the logis is the same with update tour
+        const tour = await TourModel.findById(req.params.tourId).exec();
+        if (tour.creatorId.toString() === req.token.userId) {
+            //let them delete 
+            const query = { _id: req.params.tourId };
+            await TourModel.findOneAndDelete(query).exec();
+            res.status(200).json({ status: "ok", mesaage: "successfully delete tour" });
+        } else {
+            res.status(403).json({ ststus: "fail", message: "you are forbbiden to delete this tour" });
+        }
+    } catch (err) {
+        res.status(400).json({ status: "fail", message: err.message });
+    }
 }

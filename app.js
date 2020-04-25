@@ -4,7 +4,7 @@ setupDevEnvironmentVariables();
 const express = require("express");
 const { createUser, updateUser, authenticateUser } = require("./controllers/user");
 const { checkJwt } = require("./middleware/auth");
-const { getTours, createTour, updateTour } = require("./controllers/tour");
+const { getTours, createTour, updateTour, deleteTour } = require("./controllers/tour");
 
 
 const app = express();
@@ -27,6 +27,7 @@ router.post("/login", authenticateUser);
 router.get("/tours", getTours);
 router.post("/tour", checkJwt, createTour);
 router.put("/tour/:tourId", checkJwt, updateTour);
+router.delete("/tour/:tourId", checkJwt, deleteTour); 
 
 
 
