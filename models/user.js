@@ -27,7 +27,6 @@ const userSchema = new mongoose.Schema ({
 });
 
 userSchema.pre("save", async function (next){
-    console.log("helloooooooooooo, do you see me?");
     //just hash password if it has been modified or it new
     if(!this.isModified("password")) return next();
     try{
@@ -42,7 +41,6 @@ userSchema.pre("save", async function (next){
 
 userSchema.methods.getPublicFields = function (){
     //just show username, email and ID at client side
-    console.log("I'm hereeeeeeeeeee, do you see me?");
     const obj = {
         username: this.username,
         _id: this._id,

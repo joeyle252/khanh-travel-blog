@@ -42,12 +42,12 @@ exports.authenticateUser = async (req,res,next)=>{
         if(!user){
             res.status(401).json({status:"fail", message: "couldn't find user"});
         }
-        const validPassword = await bcrypt.compare(req.body.password, user.password);
+        const validPassword = await bcrypt.compare(req.body.password, user.password); // req.body.password = the pass from user input, user.password = the pass was storged in data base
         if(!validPassword){
             res.status(401).json({status:"fail", message: "wrong password"});
         }
-        const token = jwt.sign({username: user.username, userId: user._id}, process.env.JWT_SECRET);
-        res.status(200).json({token:token, username:user.username, userId: user._id});
+        const token = jwt.sign({username: user.username, userId: user._id}, process.env.JWT_SECRET);// generate token, token claims includes username and userId. we sign the token with the secret
+        res.status(200).json({token:token, username:user.username, userId: user._id}); //send token to the user
     }catch(err){
         res.status(400).json({status:"fail",message: err.message});
     }
