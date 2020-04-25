@@ -47,7 +47,7 @@ exports.authenticateUser = async (req,res,next)=>{
             res.status(401).json({status:"fail", message: "wrong password"});
         }
         const token = jwt.sign({username: user.username, userId: user._id}, process.env.JWT_SECRET);
-        res.status(200).json({token:token});
+        res.status(200).json({token:token, username:user.username, userId: user._id});
     }catch(err){
         res.status(400).json({status:"fail",message: err.message});
     }
