@@ -5,7 +5,7 @@ const express = require("express");
 const { createUser, updateUser, authenticateUser } = require("./controllers/user");
 const { checkJwt } = require("./middleware/auth");
 const { getTours, createTour, updateTour, deleteTour } = require("./controllers/tour");
-const { getReviews } = require("./controllers/review");
+const { getReviews, createReview } = require("./controllers/review");
 const ReviewModel = require("./models/review");
 
 
@@ -32,6 +32,7 @@ router.put("/tour/:tourId", checkJwt, updateTour);
 router.delete("/tour/:tourId", checkJwt, deleteTour);
 
 router.get("/reviews", getReviews);
+router.post("/review", checkJwt, createReview);
 
 
 

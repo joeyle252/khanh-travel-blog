@@ -5,6 +5,11 @@ const reviewSchema = new mongoose.Schema({
     content: {
         type: String,
         required: [true, " you need to leave a review"]
+    },
+    creatorId: {
+        required: [true, "need a creatorId"],
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
     }
 })
 
