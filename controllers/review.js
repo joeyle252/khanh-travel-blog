@@ -58,4 +58,23 @@ exports.editReview = async (req, res, next) => {
     } catch (err) {
         res.status(400).json({ status: "fail", message: err.message });
     }
+};
+
+exports.deleteReview = async (req, res, next)=>{
+    //1. check if creatorId = req.token.userId 
+     // if =, let them delete
+     try{
+        const review = await ReviewModel.findById(req.params.reviewId).exec();
+        if(!review){
+            return res.status(404).json({status:"fail", message: "can't find the review"});
+        }
+        if(review.creatorId.toString() === req.token.userId){
+            const query = {_id: req.params.reviewId };
+            await ReviewModel.findOneAndDelete(query).exec();
+            res.status(200).json({status: "ok", message: "successfully deleted"});
+        }
+     }catch (err){
+         res.status("400").json({status:" fail", message: err.message});
+     }
+     
 }
