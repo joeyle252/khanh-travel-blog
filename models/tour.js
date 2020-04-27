@@ -22,6 +22,11 @@ const tourSchema = new mongoose.Schema({
     minlength: [5, "Description need at least 5 characters"],
     maxlength: [500, "Description maximum lenght is 500 characters"],
   },
+  reviewIds: [{
+    required: false,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Review"
+  }]
 },
   {
     timestamp: true
