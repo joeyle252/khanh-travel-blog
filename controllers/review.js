@@ -25,14 +25,37 @@ exports.createReview = async (req, res, next) => {
     try {
         let tour = await TourModel.findById(req.query.tourId).exec();
         const review = new ReviewModel({
-            creatorId : req.token.userId,
+            creatorId: req.token.userId,
             content: req.body.content
         })
         const result = await review.save();
         tour.reviewIds.push(result._id);
         await tour.save();
-        res.status(200).json({ status: "ok", review: result})
+        res.status(200).json({ status: "ok", review: result })
     } catch (err) {
         res.status(400).json({ status: "fail", message: err.message })
+    }
+};
+
+exports.editReview = async (req, res, next) => {
+    // 1. find the review Id with params
+    //2. check if creatorId = req.token.userId or not
+    // if yes, let user edit content
+    // if not, error: 401: unthenticate user
+    try {
+        const review = await ReviewModel.findById(req.params.reviewId).exec();
+        if (!review) {
+            // just incase some one deleted resource before user reload the page
+            return res.status(404).json({ status: "fail", message: "can't find the review" })
+        }
+        if (review.creatorId.toString() === req.token.userId) {
+            review.content = req.body.content;
+            const result = await review.save();
+            res.status(200).json({ status: "ok", review: result })
+        } else {
+            return res.status(403).json({ status: "fail", message: "forbbiden edit" })
+        }
+    } catch (err) {
+        res.status(400).json({ status: "fail", message: err.message });
     }
 }

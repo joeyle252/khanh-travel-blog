@@ -8,6 +8,7 @@ const reviewSchema = new mongoose.Schema({
     },
     creatorId: {
         required: [true, "need a creatorId"],
+        trim: true,
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     }
