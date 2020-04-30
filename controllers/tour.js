@@ -2,12 +2,17 @@
 const TourModel = require("../models/tour")
 
 exports.getTours = async (req, res, next) => {
-    let query = {};
+    let queries = [];
     if (req.query.userId) {
-        query = { creatorId: req.query.userId }
+        queries.push( {creatorId: req.query.userId })
     }
-    const tours = await TourModel.find(query).exec();
+    if (req.query.categoryId) {
+        queries.push({categoryIds: req.query.categoryId })
+    } 
+
+    const tours = await TourModel.find({ $and:queries }).exec();
     return res.status(200).json({ tours: tours })
+    
 };
 
 exports.createTour = async (req, res, next) => {
@@ -16,6 +21,7 @@ exports.createTour = async (req, res, next) => {
             name: req.body.name,
             creatorId: req.token.userId, // req.user.userId
             description: req.body.description,
+            categoryIds: req.body.categoryIds
         })
         await tour.save();
         res.json(tour);
@@ -33,6 +39,7 @@ exports.updateTour = async (req, res, next) => {
             //name + desciption
             tour.name = req.body.name;
             tour.description = req.body.description;
+            tour.categoryIds = req.body.categoryIds;
             await tour.save();
             const result = tour.getPublicFields();
             res.json(result);

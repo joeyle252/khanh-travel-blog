@@ -7,6 +7,7 @@ const { checkJwt } = require("./middleware/auth");
 const { getTours, createTour, updateTour, deleteTour } = require("./controllers/tour");
 const { getReviews, createReview, editReview, deleteReview } = require("./controllers/review");
 const ReviewModel = require("./models/review");
+const CategoryModel = require("./models/category");
 
 
 const app = express();
@@ -27,6 +28,7 @@ router.put("/user/:userId", checkJwt, updateUser); // we add protection, just in
 router.post("/login", authenticateUser);
 
 router.get("/tours", getTours);
+
 router.post("/tour", checkJwt, createTour);
 router.put("/tour/:tourId", checkJwt, updateTour);
 router.delete("/tour/:tourId", checkJwt, deleteTour);

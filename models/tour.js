@@ -26,7 +26,15 @@ const tourSchema = new mongoose.Schema({
     required: false,
     type: mongoose.Schema.Types.ObjectId,
     ref: "Review"
-  }]
+  }],
+  categoryIds: {
+    type: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category" 
+    }],
+    required: true,
+    default: undefined
+  }
 },
   {
     timestamp: true
@@ -39,6 +47,7 @@ tourSchema.methods.getPublicFields = function () {
     name: this.name,
     creatorId: this.creatorId,
     description: this.description,
+    categoryIds: this.categoryIds
   };
   return obj;
 };
